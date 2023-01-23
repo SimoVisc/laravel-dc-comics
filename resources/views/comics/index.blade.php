@@ -25,7 +25,10 @@
                     <td> <img src="{{ $comic->thumb }}" alt="{{ $comic->title }}" width="150"></td>
                     <td>{{ $comic->title }}</td>
                     <td>{{ $comic->series }}</td>
-                    <td> <a href="{{ route('comics.show', $comic->id) }}" class="btn btn-info"> Read More</a></td>
+                    <td>
+                        <a href="{{ route('comics.show', $comic->id) }}" class="btn btn-primary"> Read More</a>
+                        <a href="{{ route('comics.edit', $comic->id) }}" class="btn btn-info text-light"> Edit</a>
+                    </td>
                 </tr>
             @endforeach
 
