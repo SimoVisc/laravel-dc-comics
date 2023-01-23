@@ -6,6 +6,7 @@
 
 @section('page-content')
     <h1> Comics List </h1>
+    <a class="btn btn-warning" href="{{ route('comics.create') }}">Add Comic</a>
     <table class="table">
         <thead>
             <tr>
