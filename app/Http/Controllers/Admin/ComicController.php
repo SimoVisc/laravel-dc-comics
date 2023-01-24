@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Comic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreComicRequest;
 
 class ComicController extends Controller
 {
@@ -15,7 +16,7 @@ class ComicController extends Controller
      */
     public function index()
     {
-        $comics=Comic::all();
+        $comics = Comic::all();
 
         return view('comics.index', compact('comics'));
     }
@@ -36,23 +37,17 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComicRequest $request)
     {
-    $request->validate([
-        'title'=> 'required|string|max:50',
-        'description'=> 'required|string',
-        'thumb'=> 'required|url|',
-        'price'=> 'required|numeric|between: 1,20',
-        'series'=> 'required|string',
-        'sale_date'=> 'required|date',
-        'type'=> 'required|string',
-    ]);
-   
-        $data = $request->all();
+        // recupero tutti i dati
+        $data = $request->validated();
+        // creo il nuovo fumetto
         $new_comic = new Comic();
         $new_comic->fill($data);
         $new_comic->save();
-        return redirect()->route('comic.show', $new_comic->id );
+        // redirect alla pagina del fumetto appena creato
+        return redirect()->route('comics.show', $new_comic->id);
+
     }
 
     /**
@@ -84,11 +79,14 @@ class ComicController extends Controller
      * @param  \App\Models\Comic  $comic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(StoreComicRequest $request, Comic $comic)
     {
-        $data = $request->all();
+       
+        $data = $request->validated();
+       
         $comic->update($data);
-        return redirect()->route('comic.show', $comic->id );
+       
+        return redirect()->route('comics.show', $comic);
     }
 
     /**
@@ -100,6 +98,7 @@ class ComicController extends Controller
     public function destroy(Comic $comic)
     {
         $comic->delete();
-        return redirect()->route('comics.index', $comic->id );
+
+        return redirect()->route('comics.index');
     }
 }
